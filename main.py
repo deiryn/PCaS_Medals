@@ -138,7 +138,8 @@ async def award(interaction: discord.Interaction, awardee: discord.Member, medal
     DB[awardeeID] = tempDict
     #print(tempDict)
     DB.close()
-    await interaction.response.send_message(f"awardee: {awardee.name}\nmedal: {medal.name}/{medal.value}")
+    embed= discord.Embed(title="Awarded!", description=f"{getMedal(medal.value)} was awarded to {awardee.name}!", color=discord.Colour.green())
+    await interaction.response.send_message(embed=embed)
     print("[Shelve] Stored")
 
 
@@ -217,7 +218,7 @@ async def seize(interaction: discord.Interaction, target: discord.Member, medal:
     else:
         del tempDict[medal.value]
 
-    embed = discord.Embed(title="Seized!", description=f"The \"{getMedal(medal.value)}\" was seized.\nOne medal was removed (more medals may remain).")
+    embed = discord.Embed(title="Seized!", description=f"The {getMedal(medal.value)} was seized from {target.name}.\nOne medal was removed (more medals may remain).")
     DB[targetID] = tempDict
     print("[Shelve] Stored")
     await interaction.response.send_message(embed=embed)
