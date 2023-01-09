@@ -57,25 +57,24 @@ async def check(interaction: discord.Interaction, user: discord.Member = None):
         for medal, amount in getUserMedals.items():
             userMedals.append(getMedal(medal))
             medalAmount.append(amount)
-        print(userMedals)
-        print(medalAmount)
+        #print(userMedals)
+        #print(medalAmount)
         embed = discord.Embed(title="Medals:", description="Listing all of your medals...")
         for medal, amount in zip(userMedals, medalAmount):
                 embed.add_field(name="\u200b", value=f"{medal} x{amount}", inline=False)
         await interaction.response.send_message(embed=embed)
         DB.close()
     except Exception as e:
-        await interaction.response.send_message(f"No medals were found or an error happened.", ephemeral=True)
         print(f"CHECK ERROR: {e}")
-        DB.close()
+        await interaction.response.send_message(f"No medals were found or an error happened.", ephemeral=True)
 
 
 @bot.tree.command(name = "award", description = "Award a medal to a user")
-@app_commands.choices(medals=[
+@app_commands.choices(medal=[
 	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal1', value = 1),
 	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal2', value = 2),
 	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal3', value = 3)])
-async def award(interaction: discord.Interaction, awardee: discord.Member, medals: discord.app_commands.Choice[int]):
+async def award(interaction: discord.Interaction, awardee: discord.Member, medal: discord.app_commands.Choice[int]):
     DB = shelve.open("Medals")
     try:
         awardeeID = str(awardee.id)
@@ -83,15 +82,15 @@ async def award(interaction: discord.Interaction, awardee: discord.Member, medal
     except:
         DB[awardeeID] = {}
     tempDict = DB[awardeeID]
-    if medals.value in tempDict:
-        medalAmount = tempDict[medals.value]
-        tempDict[medals.value] = medalAmount + 1
+    if medal.value in tempDict:
+        medalAmount = tempDict[medal.value]
+        tempDict[medal.value] = medalAmount + 1
     else:
-        tempDict[medals.value] = 1
+        tempDict[medal.value] = 1
     DB[awardeeID] = tempDict
-    print(tempDict)
+    #print(tempDict)
     DB.close()
-    await interaction.response.send_message(f"awardee: {awardee.name}\nmedal: {medals.name}/{medals.value}")
+    await interaction.response.send_message(f"awardee: {awardee.name}\nmedal: {medal.name}/{medal.value}")
     print("[Shelve] Stored")
 
 
@@ -110,7 +109,7 @@ async def strip(interaction: discord.Interaction, target: discord.Member):
             targetID = str(target.id)
             DB[targetID]
         except:
-            await interaction.response.send_message("User not found.")
+            await interaction.response.send_message("User not found or the user has no medals.", ephemeral=True)
             return
         del DB[targetID]
         embed = discord.Embed(title="Success!", description=f"{target.name} is cleared of medals.", colour = discord.Colour.red())
@@ -124,6 +123,38 @@ async def strip(interaction: discord.Interaction, target: discord.Member):
         await interaction.response.send_message(embed=embed, view=view)
     except Exception as e:
         print(e)
+
+
+@bot.tree.command(name = "seize", description="Take away a medal of a user")
+@app_commands.choices(medal=[
+	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal1', value = 1),
+	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal2', value = 2),
+	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal3', value = 3)])
+async def seize(interaction: discord.Interaction, target: discord.Member, medal: discord.app_commands.Choice[int]):
+    DB = shelve.open("Medals")
+    try:
+        targetID = str(target.id)
+        DB[targetID]
+    except Exception as e:
+        print(e)
+        await interaction.response.send_message("User not found or the user has no medals.", ephemeral=True)
+        return
+    try:
+        DB[targetID][medal.value]
+    except:
+       await interaction.response.send_message("Medal not found in user inventory.", ephemeral=True)
+       return
     
+    tempDict = DB[targetID]
+
+    
+    if tempDict[medal.value] > 1:
+        medalAmount = tempDict[medal.value]
+        tempDict[medal.value] = medalAmount - 1
+    else:
+        del tempDict[medal.value]
+
+    embed = discord.Embed(title="Seized!", description=f"The \"{getMedal(medal.value)}\" was seized.\nOne medal was removed (more medals may remain).")
+    await interaction.response.send_message(embed=embed)
 
 bot.run(config['TOKEN'])
