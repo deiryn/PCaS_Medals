@@ -103,9 +103,25 @@ async def check(interaction: discord.Interaction, user: discord.Member = None):
 
 @bot.tree.command(name = "award", description = "Award a medal to a user")
 @app_commands.choices(medal=[
-	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal1', value = 1),
-	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal2', value = 2),
-	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal3', value = 3)])
+	discord.app_commands.Choice(name='Order of hollo55', value = 1),
+	discord.app_commands.Choice(name='Order of Nitro', value = 2),
+	discord.app_commands.Choice(name='Official Medal of Clownery', value = 3),
+    discord.app_commands.Choice(name='PCaS Veteran\' Award', value = 4),
+    discord.app_commands.Choice(name='Winner of the PCaS Challenge (P2)', value = 5),
+    discord.app_commands.Choice(name='Winner of the PCaS Challenge (P1)', value = 6),
+    discord.app_commands.Choice(name='Merit I', value = 7),
+    discord.app_commands.Choice(name='Merit II', value = 8),
+    discord.app_commands.Choice(name='Merit III', value = 9),
+    discord.app_commands.Choice(name='Merit IV', value = 10),
+    discord.app_commands.Choice(name='Merit V', value = 11),
+    discord.app_commands.Choice(name='Meritorious Merit of Meritness', value = 12),
+    discord.app_commands.Choice(name='Medal of Conduct', value = 13),
+    discord.app_commands.Choice(name='Medal of Activity', value = 14),
+    discord.app_commands.Choice(name='Medal of Development Excellence', value = 15),
+    discord.app_commands.Choice(name='Medal of Event Excellence', value = 16),
+    discord.app_commands.Choice(name='Medal of Security Excellence', value = 17),
+    discord.app_commands.Choice(name='Medal of Food Excellence', value = 18),
+    discord.app_commands.Choice(name='Loser of the PCaS Challenge', value = 19)])
 async def award(interaction: discord.Interaction, awardee: discord.Member, medal: discord.app_commands.Choice[int]):
     DB = shelve.open("Medals")
     try:
