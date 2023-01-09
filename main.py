@@ -25,11 +25,43 @@ except Exception as e:
 def getMedal(id):
     match id:
         case 1:
-            return "🥇 medal1"
+            return "<:order_of_hollo55:1030766918291951656> Order of hollo55"
         case 2:
-            return "🥈 medal2"
+            return "<:order_of_nitro:1030767000127012935> Order of Nitro"
         case 3:
-            return "🥉 medal3"
+            return "<:clownery_medal:1003662400513388554> Official Medal of Clownery"
+        case 4:
+            return "<:veterans_award:1030767334727622719> PCaS Veteran' Award"
+        case 5:
+            return "<:winner_of_p2:1030767529091674113> Winner of the PCaS Challenge (P2)"
+        case 6:
+            return "<:winner_of_p1:1030767598687748176> Winner of the PCaS Challenge (P1)"
+        case 7:
+            return "Merit I"
+        case 8:
+            return "Merit II"
+        case 9:
+            return "Merit III"
+        case 10:
+            return "Merit IV"
+        case 11:
+            return "Merit V"
+        case 12:
+            return "<:merit_VI_medal:1030768469605621822> Meritorious Merit of Meritness"
+        case 13:
+            return "<:conduct:1030767684436115537> Medal of Conduct"
+        case 14:
+            return "<:activity:1030767651590508584> Medal of Activity"
+        case 15:
+            return "<:development_excellence:1030767088048033822> Medal of Development Excellence"
+        case 16:
+            return "<:event_excellence:1030767160450105446> Medal of Event Excellence"
+        case 17:
+            return "<:security_excellence:1030767207405334598> Medal of Security Excellence"
+        case 18:
+            return "<:food_excellence:1030767250514395156> Medal of Food Excellence"
+        case 19:
+            return "<:loser_of_p2:1030769136906809375> Loser of the PCaS Challenge"
         case _:
             return
 
@@ -127,9 +159,25 @@ async def strip(interaction: discord.Interaction, target: discord.Member):
 
 @bot.tree.command(name = "seize", description="Take away a medal of a user")
 @app_commands.choices(medal=[
-	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal1', value = 1),
-	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal2', value = 2),
-	discord.app_commands.Choice(name='<:True:930898578963062795> TestMedal3', value = 3)])
+	discord.app_commands.Choice(name='Order of hollo55', value = 1),
+	discord.app_commands.Choice(name='Order of Nitro', value = 2),
+	discord.app_commands.Choice(name='Official Medal of Clownery', value = 3),
+    discord.app_commands.Choice(name='PCaS Veteran\' Award', value = 4),
+    discord.app_commands.Choice(name='Winner of the PCaS Challenge (P2)', value = 5),
+    discord.app_commands.Choice(name='Winner of the PCaS Challenge (P1)', value = 6),
+    discord.app_commands.Choice(name='Merit I', value = 7),
+    discord.app_commands.Choice(name='Merit II', value = 8),
+    discord.app_commands.Choice(name='Merit III', value = 9),
+    discord.app_commands.Choice(name='Merit IV', value = 10),
+    discord.app_commands.Choice(name='Merit V', value = 11),
+    discord.app_commands.Choice(name='Meritorious Merit of Meritness', value = 12),
+    discord.app_commands.Choice(name='Medal of Conduct', value = 13),
+    discord.app_commands.Choice(name='Medal of Activity', value = 14),
+    discord.app_commands.Choice(name='Medal of Development Excellence', value = 15),
+    discord.app_commands.Choice(name='Medal of Event Excellence', value = 16),
+    discord.app_commands.Choice(name='Medal of Security Excellence', value = 17),
+    discord.app_commands.Choice(name='Medal of Food Excellence', value = 18),
+    discord.app_commands.Choice(name='Loser of the PCaS Challenge', value = 19)])
 async def seize(interaction: discord.Interaction, target: discord.Member, medal: discord.app_commands.Choice[int]):
     DB = shelve.open("Medals")
     try:
@@ -147,7 +195,6 @@ async def seize(interaction: discord.Interaction, target: discord.Member, medal:
     
     tempDict = DB[targetID]
 
-    
     if tempDict[medal.value] > 1:
         medalAmount = tempDict[medal.value]
         tempDict[medal.value] = medalAmount - 1
@@ -155,6 +202,8 @@ async def seize(interaction: discord.Interaction, target: discord.Member, medal:
         del tempDict[medal.value]
 
     embed = discord.Embed(title="Seized!", description=f"The \"{getMedal(medal.value)}\" was seized.\nOne medal was removed (more medals may remain).")
+    DB[targetID] = tempDict
+    print("[Shelve] Stored")
     await interaction.response.send_message(embed=embed)
 
 bot.run(config['TOKEN'])
