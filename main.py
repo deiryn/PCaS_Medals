@@ -126,7 +126,7 @@ async def award(interaction: discord.Interaction, awardee: discord.Member, medal
     DB[awardeeID] = tempDict
     #print(tempDict)
     DB.close()
-    embed= discord.Embed(title="Awarded!", description=f"{getMedal(medal.value)} was awarded to {awardee.name}!", color=discord.Colour.green())
+    embed= discord.Embed(title="Awarded!", description=f"**{getMedal(medal.value)}** was awarded to {awardee.name}!", color=discord.Colour.green())
     await interaction.response.send_message(embed=embed)
     print("[Shelve] Stored")
 
