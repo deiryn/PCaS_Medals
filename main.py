@@ -85,7 +85,7 @@ async def check(interaction: discord.Interaction, user: discord.Member = None):
         #print(medalAmount)
         embed = discord.Embed(title="Medals:", description="Listing all of your medals...")
         for medal, amount in zip(userMedals, medalAmount):
-                embed.add_field(name="\u200b", value=f"{medal} x{amount}", inline=False)
+                embed.add_field(name="\u200b", value=f"**{medal}** x{amount}", inline=False)
         await interaction.response.send_message(embed=embed)
         DB.close()
     except Exception as e:
@@ -149,7 +149,7 @@ async def strip(interaction: discord.Interaction, target: discord.Member):
             await interaction.response.send_message("User not found or the user has no medals.", ephemeral=True)
             return
         del DB[targetID]
-        embed = discord.Embed(title="Success!", description=f"{target.name} is cleared of medals.", colour = discord.Colour.red())
+        embed = discord.Embed(title="Success!", description=f"**{target.name} is cleared of medals.**", colour = discord.Colour.red())
         DB.close()
         await interaction.response.send_message(embed=embed)
         print("[Shelve] Deleted value")
@@ -202,7 +202,7 @@ async def seize(interaction: discord.Interaction, target: discord.Member, medal:
     else:
         del tempDict[medal.value]
 
-    embed = discord.Embed(title="Seized!", description=f"The {getMedal(medal.value)} was seized from {target.name}.\nOne medal was removed (more medals may remain).")
+    embed = discord.Embed(title="Seized!", description=f"The **{getMedal(medal.value)}** was seized from {target.name}.\nOne medal was removed (more medals may remain).")
     DB[targetID] = tempDict
     print("[Shelve] Stored")
     await interaction.response.send_message(embed=embed)
