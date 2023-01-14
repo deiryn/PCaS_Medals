@@ -134,6 +134,7 @@ async def award(interaction: discord.Interaction, awardee: discord.Member, medal
 @bot.tree.command(name = "strip", description="Takes away ALL medals")
 async def strip(interaction: discord.Interaction, target: discord.Member):
     proceedButton = Button(label="Proceed", style=discord.ButtonStyle.red)
+    commandCaller = interaction.user.id
     try:
         view = View()
         view.add_item(proceedButton)
@@ -141,18 +142,21 @@ async def strip(interaction: discord.Interaction, target: discord.Member):
         print(e)
 
     async def proceedInteraction(interaction: discord.Interaction):
-        DB = shelve.open("Medals")
-        try:
-            targetID = str(target.id)
-            DB[targetID]
-        except:
-            await interaction.response.send_message("User not found or the user has no medals.", ephemeral=True)
-            return
-        del DB[targetID]
-        embed = discord.Embed(title="Success!", description=f"**{target.name} is cleared of medals.**", colour = discord.Colour.red())
-        DB.close()
-        await interaction.response.send_message(embed=embed)
-        print("[Shelve] Deleted value")
+        if commandCaller:
+            DB = shelve.open("Medals")
+            try:
+                targetID = str(target.id)
+                DB[targetID]
+            except:
+                await interaction.response.send_message("User not found or the user has no medals.", ephemeral=True)
+                return
+            del DB[targetID]
+            embed = discord.Embed(title="Success!", description=f"**{target.name} is cleared of medals.**", colour = discord.Colour.red())
+            DB.close()
+            await interaction.response.send_message(embed=embed)
+            print("[Shelve] Deleted value")
+        else:
+            pass
     proceedButton.callback = proceedInteraction
 
     embed = discord.Embed(title="Halt!", description="This action will clear **ALL** user medals.\n__You cannot reverse it!__", colour=discord.Color.red())
