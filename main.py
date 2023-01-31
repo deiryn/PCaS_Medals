@@ -5,9 +5,15 @@ from discord.ext import commands
 from discord.ui import Button, View
 import shelve
 from sys import exit
-import ansicon
 
-ansicon.load()
+from sys import platform
+if platform == "linux" or platform == "linux2":
+	pass
+elif platform == "darwin":
+	pass
+elif platform == "win32":
+	import ansicon
+	ansicon.load()
 
 config = json.load(open('config.json'))
 
