@@ -37,7 +37,7 @@ def getMedal(id):
         case 3:
             return "<:clownery_medal:1003662400513388554> Official Medal of Clownery"
         case 4:
-            return "<:veterans_award:1030767334727622719> PCaS Veteran' Award"
+            return "<:veterans_award:1030767334727622719> PCaS Longevity Award"
         case 5:
             return "<:winner_of_p2:1030767529091674113> Winner of the PCaS Challenge (P2)"
         case 6:
