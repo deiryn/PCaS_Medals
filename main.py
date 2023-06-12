@@ -104,7 +104,7 @@ async def check(interaction: discord.Interaction, user: discord.Member = None):
 	discord.app_commands.Choice(name='Order of hollo55', value = 1),
 	discord.app_commands.Choice(name='Order of Nitro', value = 2),
 	discord.app_commands.Choice(name='Official Medal of Clownery', value = 3),
-    discord.app_commands.Choice(name='PCaS Veteran\' Award', value = 4),
+    discord.app_commands.Choice(name='PCaS Longevity Award', value = 4),
     discord.app_commands.Choice(name='Winner of the PCaS Challenge (P2)', value = 5),
     discord.app_commands.Choice(name='Winner of the PCaS Challenge (P1)', value = 6),
     discord.app_commands.Choice(name='Merit', value = 7),
