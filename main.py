@@ -7,11 +7,7 @@ import shelve
 from sys import exit
 
 from sys import platform
-if platform == "linux" or platform == "linux2":
-	pass
-elif platform == "darwin":
-	pass
-elif platform == "win32":
+if platform == "win32":
 	import ansicon
 	ansicon.load()
 
@@ -60,6 +56,8 @@ def getMedal(id):
             return "<:food_excellence:1030767250514395156> Medal of Food Excellence"
         case 15:
             return "<:loser_of_p2:1030769136906809375> Loser of the PCaS Challenge"
+        case 16:
+            return "<:investigation_excellence:1120010669639618590> Investigation Excellence"
         case _:
             return
 
@@ -115,7 +113,8 @@ async def check(interaction: discord.Interaction, user: discord.Member = None):
     discord.app_commands.Choice(name='Medal of Event Excellence', value = 12),
     discord.app_commands.Choice(name='Medal of Security Excellence', value = 13),
     discord.app_commands.Choice(name='Medal of Food Excellence', value = 14),
-    discord.app_commands.Choice(name='Loser of the PCaS Challenge', value = 15)])
+    discord.app_commands.Choice(name='Loser of the PCaS Challenge', value = 15),
+    discord.app_commands.Choice(name='Investigation Excellence', value = 16)])
 async def award(interaction: discord.Interaction, awardee: discord.Member, medal: discord.app_commands.Choice[int]):
     DB = shelve.open("Medals")
     try:
@@ -188,7 +187,8 @@ async def strip(interaction: discord.Interaction, target: discord.Member):
     discord.app_commands.Choice(name='Medal of Event Excellence', value = 12),
     discord.app_commands.Choice(name='Medal of Security Excellence', value = 13),
     discord.app_commands.Choice(name='Medal of Food Excellence', value = 14),
-    discord.app_commands.Choice(name='Loser of the PCaS Challenge', value = 15)])
+    discord.app_commands.Choice(name='Loser of the PCaS Challenge', value = 15),
+    discord.app_commands.Choice(name='Investigation Excellence', value = 16)])
 async def seize(interaction: discord.Interaction, target: discord.Member, medal: discord.app_commands.Choice[int]):
     DB = shelve.open("Medals")
     try:
