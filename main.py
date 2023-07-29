@@ -87,7 +87,7 @@ async def check(interaction: discord.Interaction, user: discord.Member = None):
             medalAmount.append(amount)
         #print(userMedals)
         #print(medalAmount)
-        embed = discord.Embed(title="Medals:", description="Listing all of your medals...")
+        embed = discord.Embed(title="Medals", description=f"{interaction.user.name}'s awards:")
         for medal, amount in zip(userMedals, medalAmount):
                 embed.add_field(name="\u200b", value=f"**{medal}** x{amount}", inline=False)
         await interaction.response.send_message(embed=embed)
